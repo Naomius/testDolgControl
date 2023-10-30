@@ -3,15 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { BooksMainRoutingModule } from './books-main-routing.module';
 import { BooksComponent } from './books/books.component';
+import {SharedModule} from "../../shared/shared.module";
+import { BookComponent } from './book/book.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
-    BooksComponent
+    BooksComponent,
+    BookComponent
   ],
-  imports: [
-    CommonModule,
-    BooksMainRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        BooksMainRoutingModule,
+        SharedModule,
+        FormsModule,
+    ]
 })
 export class BooksMainModule { }

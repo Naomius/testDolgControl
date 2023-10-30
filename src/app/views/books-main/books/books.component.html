@@ -1,1 +1,73 @@
-<p>books works!</p>
+<div class="container">
+  <div class="error text-center" *ngIf="error">
+    {{error}}
+  </div>
+
+  <ng-container *ngIf="!error">
+    <div *ngIf="isLoading" id="loader"></div>
+
+    <ng-container *ngIf="!isLoading">
+      <div class="books-head">
+        <div class="books-head-filters">
+        <app-filter class="books-filter"
+          (onFilterBooks)="filterBooks($event)"
+          (onCleanInput)="cleanInput()"
+          [searchString]="searchString"
+        >
+        </app-filter>
+        </div>
+
+        <div class="books-sorting" [class.open]="isSortingOpen" (click)="toggleSorting()">
+          <div class="books-sorting-head">
+            <span>Сортировать</span>
+            <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.0003 14.5C9.41693 14.5 8.83359 14.275 8.39193 13.8334L2.95859 8.40003C2.71693 8.15837 2.71693 7.75837 2.95859 7.5167C3.20026 7.27503 3.60026 7.27503 3.84193 7.5167L9.27526 12.95C9.67526 13.35 10.3253 13.35 10.7253 12.95L16.1586 7.5167C16.4003 7.27503 16.8003 7.27503 17.0419 7.5167C17.2836 7.75837 17.2836 8.15837 17.0419 8.40003L11.6086 13.8334C11.1669 14.275 10.5836 14.5 10.0003 14.5Z" fill="#2C2C2C"/>
+            </svg>
+          </div>
+          <div class="catalog-sorting-body">
+            <div class="catalog-sorting-item"></div>
+          </div>
+        </div>
+      </div>
+        <label>Sort by &nbsp</label>
+        <select [(ngModel)]= "SortbyParam">
+          <option value="price">Цена</option>
+          <option value="title">Название</option>
+        </select>
+
+
+      <div class="filter-error" *ngIf="searchString.length > 0 && books.length === 0; else tableBooks">
+        К сожалению, по запросу "{{searchString}}" ничего не найдено.
+      </div>
+
+      <ng-template #tableBooks>
+        <table class="table" >
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Картинка</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Описание</th>
+            <th>кнопка</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let book of books | sort:[SortbyParam, SortDirection]; let i = index">
+            <td>{{i + 1}}</td>
+            <td><img class="table-image" src="{{book.image}}" alt="book"></td>
+            <td><a [routerLink]="['/book', book.id]">{{book.title}}</a></td>
+            <td class="table-price">{{book.price}}</td>
+            <td>{{book.subtitle}}</td>
+            <td>
+              <button class="recycle-btn">
+                <img src="./assets/images/plus-icon.svg" alt="plus">
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</div>

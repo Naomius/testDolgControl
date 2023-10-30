@@ -1,0 +1,20 @@
+<section class="book">
+  <div class="container">
+    <div class="book-item" *ngIf="bookProd.title; else loading">
+      <div class="book-item__image">
+        <img src="{{bookProd.image}}" alt="book">
+      </div>
+      <h2 class="book-item__title">{{bookProd.title}}</h2>
+      <div class="book-item__text">{{bookProd.subtitle}}</div>
+      <div class="book-item__button">
+        <button routerLink="/books">На страницу Постов</button>
+      </div>
+      <div class="book-item__button">
+        <button class="blue" routerLink="/books">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div id="loader"></div>
+  </ng-template>
+</section>
