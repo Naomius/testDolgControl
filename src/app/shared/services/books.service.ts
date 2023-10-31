@@ -8,7 +8,7 @@ import {BooksType, JsonType} from "../../types/books-type";
 })
 export class BooksService{
 
-  private bookss!: JsonType[];
+  private bookss!: BooksType[];
 
   constructor(private http: HttpClient) {
     this.getBooks()
@@ -20,16 +20,26 @@ export class BooksService{
       })
   }
 
-  getBooks(): Observable<BooksType> {
-    return this.http.get<BooksType>('/assets/books.json')
+  getBooks(): Observable<JsonType> {
+    return this.http.get<JsonType>('/assets/books.json')
   }
 
-  getBook(id: number): Observable<JsonType> {
-    return this.http.get<JsonType>(`/assets/books.json/books/id/${id}`)
-  }
-
-  getBookId(id: number): JsonType | undefined {
+  getBookId(id: number): BooksType | undefined {
     return this.bookss.find(item => (item.id === +id))
   }
+
+  getBooks2(): Observable<BooksType[]> {
+    return this.http.get<JsonType>('/assets/books.json').pipe(map(item => item.books))
+  }
+
+   getPropByPath(object: any, path: string[]): any {
+    return path.reduce((obj, propName) => obj[propName], object);
+  }
+
+  // getBookId(id: number): JsonType | undefined {
+  //   return this.getBooks().find(item => item.id == id)
+  // }
+
+
 
 }
