@@ -29,23 +29,21 @@
           <tr>
             <th>#</th>
             <th>Картинка</th>
-            <th (click)="sortBy('title')">Название</th>
+            <th>Название</th>
             <th>Цена</th>
             <th>Описание</th>
-            <th>кнопка</th>
+            <th>Купить</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let book of books; let i = index">
             <td>{{i + 1}}</td>
             <td><img class="table-image" src="{{book.image}}" alt="book"></td>
-            <td><a routerLink="/book/{{book.id}}">{{book.title}}</a></td>
+            <td><a routerLink="/book/{{book.id}}" [state]="{ id:1, name:'Angular'}">{{book.title}}</a></td>
             <td class="table-price">{{book.price | currency}}</td>
             <td>{{book.subtitle}}</td>
             <td>
-              <button class="recycle-btn" (click)="addToCart()">
-                <img src="./assets/images/plus-icon.svg" alt="plus">
-              </button>
+              <button class="recycle-btn" (click)="addToCart()">Купить</button>
             </td>
           </tr>
           </tbody>

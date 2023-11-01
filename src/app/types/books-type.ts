@@ -2,10 +2,10 @@
 export type JsonType = {
   error?: string,
   total?: string,
-  books: BooksType[]
+  books: BookType[]
 }
 
-export type BooksType = {
+export type BookType = {
   id: number,
   title: string,
   subtitle: string,

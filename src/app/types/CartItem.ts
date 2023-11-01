@@ -1,12 +1,12 @@
-import {BooksType} from "./books-type";
+import {BookType} from "./books-type";
 
 export class CartItem  {
 
-  constructor(book: BooksType) {
+  constructor(book: BookType) {
     this.book = book;
   }
 
-  book: BooksType;
+  book: BookType;
   quantity: number = 1;
 
   get price(): number {

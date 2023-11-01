@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BooksType} from "../../../types/books-type";
+import {BookType} from "../../../types/books-type";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -14,7 +14,7 @@ import {CartService} from "../../../shared/services/cart.service";
 export class BookComponent implements OnInit, OnDestroy{
 
   // book: JsonType = {} as JsonType;
-  book!: BooksType;
+  book!: BookType;
   private subscription: Subscription | null = null;
   isLoading: boolean = false;
   isInCart: boolean = false;
@@ -42,7 +42,7 @@ export class BookComponent implements OnInit, OnDestroy{
     this.cartService.addToCart(this.book);
     this.isInCart = true;
     this.cartService.booksSubject$.next(this.book)
-    // this.router.navigate(['/cart'])
+    this.router.navigate(['/cart'])
   }
 
   removeFromCart() {

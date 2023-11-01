@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Cart} from "../../types/Cart";
-import {BooksType} from "../../types/books-type";
+import {BookType} from "../../types/books-type";
 import {CartItem} from "../../types/CartItem";
 import {BehaviorSubject} from "rxjs";
 
@@ -12,7 +12,7 @@ export class CartService {
   cart: Cart = new Cart();
   booksSubject$ = new BehaviorSubject<any>([]);
 
-  addToCart(book: BooksType): void {
+  addToCart(book: BookType): void {
     let cartItem = this.cart.items.find(item => item.book.id === book.id);
     if (cartItem) {
       this.changeQuantity(book.id, cartItem.quantity + 1);

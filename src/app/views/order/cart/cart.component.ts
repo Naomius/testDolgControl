@@ -4,7 +4,7 @@ import {Cart} from "../../../types/Cart";
 import {CartItem} from "../../../types/CartItem";
 import {BooksService} from "../../../shared/services/books.service";
 import {map} from "rxjs";
-import {BooksType, JsonType} from "../../../types/books-type";
+import {BookType, JsonType} from "../../../types/books-type";
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +14,7 @@ import {BooksType, JsonType} from "../../../types/books-type";
 export class CartComponent implements OnInit{
 
   cart!: Cart;
-  books!: BooksType[];
+  books!: BookType[];
 
   constructor(private cartService: CartService,
               private booksService: BooksService) {

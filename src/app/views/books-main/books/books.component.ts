@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BooksType} from "../../../types/books-type";
+import {BookType} from "../../../types/books-type";
 import {BooksService} from "../../../shared/services/books.service";
 import {BehaviorSubject, combineLatest, map, Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
@@ -11,57 +11,22 @@ import {CartService} from "../../../shared/services/cart.service";
   styleUrls: ['./books.component.scss']
 })
 export class BooksComponent implements OnInit, OnDestroy{
-  books: BooksType[] = [];
-  booksCopy: BooksType[] = [];
+  books: BookType[] = [];
+  booksCopy: BookType[] = [];
   searchString = '';
   error = '';
   isLoading = false;
-  newsBooksSub!: Subscription;
+  booksSub!: Subscription;
 
-  private _ascDirection = 1;
-  private _sortCriteria$ = new BehaviorSubject<string>('');
+  orderBy: "asc" | "desc" = "asc";
 
   constructor(private booksService: BooksService,
               private cartService: CartService,
               private router: Router) {
   }
 
-
-  // Cортировка
-  books$: Observable<any> = combineLatest(
-    this.booksService.getBooks2(),
-    this._sortCriteria$
-  )
-    .pipe(
-      map(([books, criteria]) => {
-        return [...books.sort((aBook, bBook) => {
-          const path = criteria.split('.');
-          const aPropValue = this.booksService.getPropByPath(aBook, path);
-          const bPropValue = this.booksService.getPropByPath(bBook, path);
-
-          const less = -1 * this._ascDirection;
-          const more = 1 * this._ascDirection;
-
-          if (typeof aPropValue === 'string') {
-            return aPropValue.toLowerCase() <= bPropValue.toLowerCase() ? less : more;
-          } else {
-            return aPropValue <= bPropValue ? less : more;
-          }
-        })]
-      })
-    )
-
-  sortBy(criteria: string): void {
-    if (criteria === this._sortCriteria$.getValue()) {
-      this._ascDirection *= -1;
-    } else {
-      this._ascDirection = 1;
-    }
-    this._sortCriteria$.next(criteria);
-  }
-
   ngOnInit(): void {
-    this.getPosts();
+    this.getBooks();
   }
 
   addToCart() {
@@ -70,9 +35,9 @@ export class BooksComponent implements OnInit, OnDestroy{
     // this.cartService.booksSubject$.next(this.books)
   }
 
-  getPosts(): void {
+  getBooks(): void {
     this.isLoading = true;
-    this.newsBooksSub = this.booksService.getBooks()
+    this.booksSub = this.booksService.getBooks()
       .pipe(
         map(result => result.books)
       )
@@ -91,7 +56,8 @@ export class BooksComponent implements OnInit, OnDestroy{
   filterBooks(str: string): void {
     if (str.trim()) {
       this.searchString = str;
-      this.books = this.booksCopy.filter(news => news.title.toLocaleLowerCase().includes(str.toLowerCase()));
+      this.books = this.booksCopy.filter(book => book.title.toLocaleLowerCase().includes(str.toLowerCase())) ||
+        this.booksCopy.filter(book => book.subtitle.toLocaleLowerCase().includes(str.toLowerCase()))
     } else {
       this.cleanInput();
     }
@@ -104,13 +70,9 @@ export class BooksComponent implements OnInit, OnDestroy{
 
 
   ngOnDestroy(): void {
-    if (this.newsBooksSub) {
-      this.newsBooksSub?.unsubscribe();
+    if (this.booksSub) {
+      this.booksSub?.unsubscribe();
     }
   }
-
-
-
-
 
 }

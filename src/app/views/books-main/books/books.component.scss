@@ -70,6 +70,7 @@
       &.open {
         width: 257px;
         min-width: 257px;
+
         .catalog-sorting-head {
           color: #000000;
           background: #EBEBEB;
@@ -117,6 +118,7 @@
 
     td {
       padding: 5px 2px;
+
       .table-image {
         width: 100px;
       }
@@ -137,10 +139,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-
-        img {
-          position: absolute;
-        }
+        color: white;
       }
 
     }
