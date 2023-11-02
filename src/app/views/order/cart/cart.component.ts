@@ -1,50 +1,51 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from "../../../shared/services/cart.service";
 import {Cart} from "../../../types/Cart";
-import {CartItem} from "../../../types/CartItem";
-import {BooksService} from "../../../shared/services/books.service";
-import {map} from "rxjs";
-import {BookType, JsonType} from "../../../types/books-type";
+import {BookType} from "../../../types/books-type";
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit{
+export class CartComponent implements OnInit {
 
   cart!: Cart;
   books!: BookType[];
+  allBooksCounter: any = 0;
+  totalCountPrice: number = 0;
 
-  constructor(private cartService: CartService,
-              private booksService: BooksService) {
-    this.booksService.getBooks()
-      .pipe(
-        map(result => result.books)
-      )
-      .subscribe(data => {
-        this.books = data;
-      })
-
-    this.setCart();
+  constructor(private cartService: CartService) {
+    this.setBook()
   }
 
   ngOnInit(): void {
+    this.cartService.getBookData()
+      .subscribe(result => {
+        this.books = result;
+        this.allBooksCounter = this.cartService.getTotalAmount()
+      })
+    this.totalPrice()
   }
 
-  removeFromCart(cartItem: CartItem) {
-    this.cartService.removeFromCart(cartItem.book.id);
-    this.setCart();
+  removeBook(item: BookType) {
+    this.cartService.removeCartData(item);
+    this.totalPrice()
   }
 
-  changeQuantity(cartItem: CartItem, quantityInString: string) {
-    const quantity = parseInt(quantityInString);
-    this.cartService.changeQuantity(cartItem.book.id, quantity);
-    this.setCart();
+  removeAllBooks() {
+    this.cartService.removeAllCart();
   }
 
-  setCart() {
-    this.cart = this.cartService.getCart();
+   totalPrice() {
+    let totalPrice: number = 0;
+    this.books.forEach(item => {
+      totalPrice += +item.price;
+      return this.totalCountPrice = totalPrice;
+    });
   }
 
+    setBook() {
+       this.books = this.cartService.getBook();
+    }
 }

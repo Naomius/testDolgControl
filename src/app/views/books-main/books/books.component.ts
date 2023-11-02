@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BookType} from "../../../types/books-type";
 import {BooksService} from "../../../shared/services/books.service";
-import {BehaviorSubject, combineLatest, map, Observable, Subscription} from "rxjs";
+import {map, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {CartService} from "../../../shared/services/cart.service";
 
@@ -18,7 +18,6 @@ export class BooksComponent implements OnInit, OnDestroy{
   isLoading = false;
   booksSub!: Subscription;
 
-  orderBy: "asc" | "desc" = "asc";
 
   constructor(private booksService: BooksService,
               private cartService: CartService,
@@ -27,12 +26,13 @@ export class BooksComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.getBooks();
+    this.books.forEach((book: BookType) => {
+      Object.assign(book, {quantity: 1, total: book.price})
+    });
   }
 
-  addToCart() {
-    // let cartItem = this.books.find(item => item.id );
-    // this.cartService.addToCart(this.books);
-    // this.cartService.booksSubject$.next(this.books)
+  addToCart(book: BookType) {
+    this.cartService.addToCart(book)
   }
 
   getBooks(): void {
@@ -66,6 +66,10 @@ export class BooksComponent implements OnInit, OnDestroy{
   cleanInput(): void {
     this.searchString = '';
     this.books = this.booksCopy;
+  }
+
+  removeBook(book:any) {
+    this.cartService.removeCartData(book)
   }
 
 

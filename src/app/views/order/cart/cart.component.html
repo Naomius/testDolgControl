@@ -1,24 +1,24 @@
-<app-books-not-found [visible]="!cart || cart.items.length <=0"
+<app-books-not-found [visible]="!books || books.length <= 0"
                      notFoundMessage="Cart Page Is Empty!"
                      resetLinkText="Go To Homepage"
 >
 </app-books-not-found>
 
-<div *ngIf="cart && cart.items.length >0" class="container">
+<div *ngIf="books && books.length >0" class="container">
 
   <ul>
-    <li *ngFor="let cartItem of cart.items">
+    <li *ngFor="let book of books">
       <div>
-        <img [src]="cartItem.book.image" [alt]="cartItem.book.title">
+        <img [src]="book.image" [alt]="book.title">
       </div>
       <div>
-          {{cartItem.book.title}}
+          {{book.title}}
       </div>
       <div>
-        {{cartItem.book.price | currency}}
+        {{book.price | currency}}
       </div>
       <div>
-        <button class="remove-button" (click)="removeFromCart(cartItem)">
+        <button class="remove-button" (click)="removeBook(book)">
           Удалить товар
         </button>
       </div>
@@ -27,10 +27,11 @@
 
   <div class="checkout">
     <div>
-      <div class="books-count">{{cart.items.length}}</div>
-      <div class="total-price">{{cart.totalPrice | currency}}</div>
+      <div class="books-count">{{books.length}}</div>
+      <div class="total-price">{{totalCountPrice | currency}}</div>
     </div>
   </div>
 
 </div>
 
+<!--(click)="removeFromCart(cartItem)"-->

@@ -158,3 +158,16 @@ body {
   color: #0c2a5d;
 }
 
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 10px 10px;
+  background-color: green;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+

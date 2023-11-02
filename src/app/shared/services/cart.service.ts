@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Cart} from "../../types/Cart";
 import {BookType} from "../../types/books-type";
-import {CartItem} from "../../types/CartItem";
 import {BehaviorSubject} from "rxjs";
 
 @Injectable({
@@ -9,69 +7,45 @@ import {BehaviorSubject} from "rxjs";
 })
 export class CartService {
 
-  cart: Cart = new Cart();
+  bookDataList: BookType[] = [];
   booksSubject$ = new BehaviorSubject<any>([]);
 
-  addToCart(book: BookType): void {
-    let cartItem = this.cart.items.find(item => item.book.id === book.id);
-    if (cartItem) {
-      this.changeQuantity(book.id, cartItem.quantity + 1);
-      this.booksSubject$.next(cartItem)
-      return;
-    }
-    this.cart.items.push(new CartItem(book))
-    this.booksSubject$.next(book)
+  constructor() {
   }
 
-  removeFromCart(bookId: number): void {
-    this.cart.items =
-    this.cart.items.filter(item => item.book.id != bookId);
+  getBookData() {
+    return this.booksSubject$.asObservable();
   }
 
-  changeQuantity(bookId: number, quantity: number) {
-    let cartItem = this.cart.items.find(item => item.book.id === bookId);
-      if (!cartItem) return;
-      cartItem.quantity = quantity;
+  addToCart(product:any) {
+    this.bookDataList.push(product);
+    this.booksSubject$.next(this.bookDataList);
+    this.getTotalAmount();
+  }
+  //
+  getTotalAmount() {
+    let grandTotal = 0;
+    this.bookDataList.map((a:any) => {
+      grandTotal += a.total;
+    })
   }
 
-  getCart(): Cart {
-    return this.cart;
+  removeCartData(product:any) {
+    this.bookDataList.map((a:any, index: any) => {
+      if (product.id === a.id) {
+        this.bookDataList.splice(index, 1)
+      }
+    })
+    this.booksSubject$.next(this.bookDataList)
   }
 
-  //Иной вариант реализации
+  removeAllCart() {
+    this.bookDataList = []
+    this.booksSubject$.next(this.bookDataList)
+  }
 
-  // getProductData() {
-  //   return this.booksSubject$.asObservable();
-  // }
-  //
-  // setProduct(product:any) {
-  //   this.cart.items.push(...product);
-  // }
-  //
-  // addToCart2(product:any) {
-  //   this.cart.items.push(product);
-  //   this.booksSubject$.next(this.cart.items);
-  //   this.getTotalAmount();
-  // }
-  //
-  // getTotalAmount() {
-  //   let grandTotal = 0;
-  //   this.cart.items.map((a:any) => {
-  //     grandTotal += a.total;
-  //   })
-  // }
-  //
-  // removeCartData(product:any) {
-  //   this.cart.items.map((a:any, index: any) => {
-  //     if (product.id === a.id) {
-  //       this.cart.items.splice(index, 1)
-  //     }
-  //   })
-  // }
-  //
-  // removeAllCart() {
-  //   this.cart.items = []
-  //   this.booksSubject$.next(this.cart.items)
-  // }
+  getBook(): BookType[] {
+    return this.bookDataList
+  }
 
 }

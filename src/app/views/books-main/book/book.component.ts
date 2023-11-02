@@ -13,8 +13,8 @@ import {CartService} from "../../../shared/services/cart.service";
 })
 export class BookComponent implements OnInit, OnDestroy{
 
-  // book: JsonType = {} as JsonType;
   book!: BookType;
+
   private subscription: Subscription | null = null;
   isLoading: boolean = false;
   isInCart: boolean = false;
@@ -27,15 +27,7 @@ export class BookComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.subscription = this.activatedRoute.params
-      .subscribe((params) => {
-        if (params['id']) {
-          const book = this.bookService.getBookId(+params['id']);
-           if (book) {
-             this.book = book;
-           }
-        }
-      })
+    this.book = history.state
   }
 
   addToCart() {
@@ -46,7 +38,7 @@ export class BookComponent implements OnInit, OnDestroy{
   }
 
   removeFromCart() {
-    this.cartService.removeFromCart(this.book.id)
+    this.cartService.removeCartData(this.book.id)
     this.isInCart = false;
     this.cartService.booksSubject$.next(this.book.id)
   }

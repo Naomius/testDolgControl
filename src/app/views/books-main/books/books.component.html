@@ -39,11 +39,12 @@
           <tr *ngFor="let book of books; let i = index">
             <td>{{i + 1}}</td>
             <td><img class="table-image" src="{{book.image}}" alt="book"></td>
-            <td><a routerLink="/book/{{book.id}}" [state]="{ id:1, name:'Angular'}">{{book.title}}</a></td>
+            <td><a [routerLink]="['/book', book.id]" [state]="book">{{book.title}}</a></td>
             <td class="table-price">{{book.price | currency}}</td>
             <td>{{book.subtitle}}</td>
             <td>
-              <button class="recycle-btn" (click)="addToCart()">Купить</button>
+              <button class="recycle-btn button" (click)="addToCart(book)">Купить</button>
+              <button class="recycle-btn-delete button" (click)="removeBook(book)">Удалить</button>
             </td>
           </tr>
           </tbody>

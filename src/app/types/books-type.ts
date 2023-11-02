@@ -12,5 +12,7 @@ export type BookType = {
   isbn13: string,
   price: string,
   image: string,
-  url: string
+  url: string,
+  count?: number,
+  totalCountPrice?: number
 }
