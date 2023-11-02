@@ -10,8 +10,8 @@
         <button routerLink="/books">На страницу Постов</button>
       </div>
       <div class="book-item__button">
-        <button class="blue" (click)="addToCart()">Добавить в корзину</button>
-<!--        <button class="blue" *ngIf="isInCart" (click)="removeFromCart()">Удалить из корзины</button>-->
+        <button class="blue " *ngIf="!book.count" (click)="addToCart(book)">Добавить в корзину</button>
+        <button class="blue blue-red" *ngIf="book.count" (click)="removeBook(book)">Удалить из корзины</button>
       </div>
     </div>
   </div>

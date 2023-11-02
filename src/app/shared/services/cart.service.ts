@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BookType} from "../../types/books-type";
-import {BehaviorSubject} from "rxjs";
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class CartService {
 
   bookDataList: BookType[] = [];
   booksSubject$ = new BehaviorSubject<any>([]);
+  updateBooks$: Subject<void> = new Subject();
 
   constructor() {
   }
@@ -17,8 +18,15 @@ export class CartService {
     return this.booksSubject$.asObservable();
   }
 
-  addToCart(product:any) {
-    this.bookDataList.push(product);
+  addToCart(bookItem: BookType) {
+    const bookInCart = this.bookDataList.find(book => book.isbn13 === bookItem.isbn13);
+    if (bookInCart) {
+      (bookInCart.count as number)++;
+    } else {
+      bookItem.count = 1;
+      this.bookDataList.push(bookItem)
+    }
+    this.updateBooks$.next();
     this.booksSubject$.next(this.bookDataList);
     this.getTotalAmount();
   }
@@ -26,16 +34,24 @@ export class CartService {
   getTotalAmount() {
     let grandTotal = 0;
     this.bookDataList.map((a:any) => {
-      grandTotal += a.total;
+     return  grandTotal += a.total;
     })
   }
 
-  removeCartData(product:any) {
-    this.bookDataList.map((a:any, index: any) => {
-      if (product.id === a.id) {
-        this.bookDataList.splice(index, 1)
+  removeCartData(bookItem: any) {
+    const bookInCart = this.bookDataList.find(book => book.isbn13 === bookItem.isbn13);
+    if (bookInCart && bookInCart.count) {
+      bookInCart.count--;
+
+      if (bookInCart.count === 0) {
+        const bookIndexInCart = this.bookDataList.findIndex(book => book.isbn13 === bookItem.isbn13);
+        this.bookDataList.splice(bookIndexInCart, 1);
+        console.log(this.bookDataList);
       }
-    })
+    }
+    this.updateBooks$.next();
+
+
     this.booksSubject$.next(this.bookDataList)
   }
 

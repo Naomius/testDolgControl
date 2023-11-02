@@ -96,6 +96,7 @@
 
   tr {
     transition: .2s ease-out;
+    max-width: 1240px;
 
     &:nth-child(even) {
       background: #f4f4f4;
@@ -111,6 +112,14 @@
 
     th {
       padding: 5px 2px;
+      width: 200px;
+
+      &:first-child {
+        text-align: center;
+        width: 20px;
+        margin: 0 20px;
+      }
+
 
       background: #cccccc;
       border-bottom: 1px solid #333;
@@ -118,7 +127,6 @@
 
     td {
       padding: 5px 2px;
-
       .table-image {
         width: 100px;
       }
@@ -141,6 +149,7 @@
 
     .table-price {
       color: black;
+      text-align: center;
       font-weight: bold;
     }
   }

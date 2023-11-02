@@ -1,4 +1,3 @@
-
 export type JsonType = {
   error?: string,
   total?: string,
@@ -13,6 +12,6 @@ export type BookType = {
   price: string,
   image: string,
   url: string,
-  count?: number,
+  count: number | null,
   totalCountPrice?: number
 }

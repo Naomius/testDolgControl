@@ -72,12 +72,19 @@
               }
             }
 
-            span {
+            div {
+              display: flex;
+              align-items: center;
+              justify-content: center;
               position: absolute;
               background-color: red;
               color: white;
-              top: 7px;
-
+              font-size: 10px;
+              top: 10px;
+              left: 70px;
+              border: 1px solid white;
+              width: 16px;
+              height: 15px;
               border-radius: 50%;
             }
           }

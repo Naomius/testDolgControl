@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from "../../../shared/services/cart.service";
-import {Cart} from "../../../types/Cart";
 import {BookType} from "../../../types/books-type";
 
 @Component({
@@ -10,7 +9,6 @@ import {BookType} from "../../../types/books-type";
 })
 export class CartComponent implements OnInit {
 
-  cart!: Cart;
   books!: BookType[];
   allBooksCounter: any = 0;
   totalCountPrice: number = 0;

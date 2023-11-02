@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BookType} from "../../../types/books-type";
-import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {BooksService} from "../../../shared/services/books.service";
@@ -11,13 +10,10 @@ import {CartService} from "../../../shared/services/cart.service";
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss']
 })
-export class BookComponent implements OnInit, OnDestroy{
+export class BookComponent implements OnInit{
 
   book!: BookType;
-
-  private subscription: Subscription | null = null;
   isLoading: boolean = false;
-  isInCart: boolean = false;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -27,24 +23,36 @@ export class BookComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.book = history.state
+    this.isLoading = true;
+    this.getBook()
+
+    this.cartService.updateBooks$.subscribe(() => {
+      this.prepareBooks();
+    })
   }
 
-  addToCart() {
-    this.cartService.addToCart(this.book);
-    this.isInCart = true;
-    this.cartService.booksSubject$.next(this.book)
+  getBook() {
+    this.book = history.state
+    this.prepareBooks()
+  }
+
+  prepareBooks(): void {
+      const findBookInCart = this.cartService.bookDataList.find((bookInCart) => bookInCart.isbn13 === this.book.isbn13);
+      if (findBookInCart) {
+        this.book.count = findBookInCart.count;
+      } else {
+        this.book.count = null;
+      }
+  }
+
+  addToCart(book:BookType) {
+    this.cartService.addToCart(book);
     this.router.navigate(['/cart'])
   }
 
-  removeFromCart() {
-    this.cartService.removeCartData(this.book.id)
-    this.isInCart = false;
-    this.cartService.booksSubject$.next(this.book.id)
+  removeBook(book: BookType) {
+    this.cartService.removeCartData(book)
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
 
 }

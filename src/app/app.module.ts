@@ -9,6 +9,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {HttpClientModule} from "@angular/common/http";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {SharedModule} from "./shared/shared.module";
+import {MatSortModule} from '@angular/material/sort';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {SharedModule} from "./shared/shared.module";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatSortModule,
     SharedModule,
     MatSnackBarModule,
     MatMenuModule,

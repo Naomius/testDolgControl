@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit{
   doLogout(): void {
     this._snakeBar.open('Вы вышли из системы');
     this.authService.logout();
+    this.cartService.removeAllCart();
     this.router.navigate(['/login']);
   }
 }

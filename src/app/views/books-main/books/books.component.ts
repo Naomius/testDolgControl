@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BookType} from "../../../types/books-type";
 import {BooksService} from "../../../shared/services/books.service";
 import {map, Subscription} from "rxjs";
-import {Router} from "@angular/router";
 import {CartService} from "../../../shared/services/cart.service";
+import {Sort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-books',
@@ -20,15 +20,56 @@ export class BooksComponent implements OnInit, OnDestroy{
 
 
   constructor(private booksService: BooksService,
-              private cartService: CartService,
-              private router: Router) {
+              private cartService: CartService) {
+    this.sortedData = this.books.slice();
   }
 
   ngOnInit(): void {
     this.getBooks();
-    this.books.forEach((book: BookType) => {
-      Object.assign(book, {quantity: 1, total: book.price})
+
+    this.cartService.updateBooks$.subscribe(() => {
+      this.prepareBooks();
+    })
+  }
+
+  //Сортировка
+  sortedData: BookType[];
+
+  sortData(sort: Sort) {
+    const data = this.books.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.books = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'title':
+          return this.compare(a.title, b.title, isAsc);
+        case 'price':
+          return this.compare(a.price, b.price, isAsc);
+        default:
+          return 0;
+      }
     });
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+
+  prepareBooks(): void {
+    this.booksCopy.forEach((book) => {
+      const findBookInCart = this.cartService.bookDataList.find((bookInCart) => bookInCart.isbn13 === book.isbn13);
+      if (findBookInCart) {
+        book.count = findBookInCart.count;
+      } else {
+        book.count = null;
+      }
+    });
+    this.books = this.booksCopy;
   }
 
   addToCart(book: BookType) {
@@ -44,6 +85,7 @@ export class BooksComponent implements OnInit, OnDestroy{
       .subscribe({
         next: (books) => {
           this.books = this.booksCopy = books;
+          this.prepareBooks();
           this.isLoading = false;
         },
         error: (error) => {
@@ -68,7 +110,7 @@ export class BooksComponent implements OnInit, OnDestroy{
     this.books = this.booksCopy;
   }
 
-  removeBook(book:any) {
+  removeBook(book: BookType) {
     this.cartService.removeCartData(book)
   }
 

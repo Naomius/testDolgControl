@@ -94,12 +94,12 @@ ul .remove-button:hover{
   margin-bottom: 1.5rem;
 }
 
-.checkout .foods-count::before{
-  content: 'Count: ';
+.checkout .books-count::before{
+  content: 'Всего книг: ';
   color: grey;
 }
 
 .checkout .total-price::before{
-  content: 'Price: ';
+  content: 'Общая цена: ';
   color: grey;
 }
