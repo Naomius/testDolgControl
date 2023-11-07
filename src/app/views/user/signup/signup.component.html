@@ -58,7 +58,7 @@
             <div class="invalid-feedback" *ngIf="userPasswordRepeat.errors?.['required']">
               <em>Необходимо ввести пароль еще раз</em>
             </div>
-            <div class="invalid-feedback" *ngIf="userPasswordRepeat.value !== userPasswordRepeat.value">
+            <div class="invalid-feedback" *ngIf="userPassword.value !== userPasswordRepeat.value">
               <em>Пароли должны совпадать</em>
             </div>
           </div>
