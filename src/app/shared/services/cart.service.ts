@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BookType} from "../../types/books-type";
+import {Book} from "../../types/books-type";
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
@@ -7,18 +7,17 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class CartService {
 
-  bookDataList: BookType[] = [];
-  booksSubject$ = new BehaviorSubject<any>([]);
-  updateBooks$: Subject<void> = new Subject();
+  public bookDataList: Book[] = [];
+  private booksSubject$ = new BehaviorSubject<any>([]);
+  public updateBooks$: Subject<void> = new Subject();
 
-  constructor() {
-  }
+  constructor() {}
 
   getBookData() {
     return this.booksSubject$.asObservable();
   }
 
-  addToCart(bookItem: BookType) {
+  addToCart(bookItem: Book) {
     const bookInCart = this.bookDataList.find(book => book.isbn13 === bookItem.isbn13);
     if (bookInCart) {
       (bookInCart.count as number)++;
@@ -28,15 +27,17 @@ export class CartService {
     }
     this.updateBooks$.next();
     this.booksSubject$.next(this.bookDataList);
-    this.getTotalAmount();
+    // this.getTotalAmount();
   }
   //
-  getTotalAmount() {
-    let grandTotal = 0;
-    this.bookDataList.map((a:any) => {
-     return  grandTotal += a.total;
-    })
-  }
+  // getTotalAmount(): void {
+  //   let grandTotal = 0;
+  //   // this.bookDataList.map((book: Book) => {
+  //   //   if (book.count) {
+  //   //     return grandTotal += book.count;
+  //   //   }
+  //   // })
+  // }
 
   removeCartData(bookItem: any) {
     const bookInCart = this.bookDataList.find(book => book.isbn13 === bookItem.isbn13);
@@ -46,21 +47,18 @@ export class CartService {
       if (bookInCart.count === 0) {
         const bookIndexInCart = this.bookDataList.findIndex(book => book.isbn13 === bookItem.isbn13);
         this.bookDataList.splice(bookIndexInCart, 1);
-        console.log(this.bookDataList);
       }
     }
     this.updateBooks$.next();
-
-
     this.booksSubject$.next(this.bookDataList)
   }
 
-  removeAllCart() {
+  removeAllBooksFromCart() {
     this.bookDataList = []
     this.booksSubject$.next(this.bookDataList)
   }
 
-  getBook(): BookType[] {
+  getBook(): Book[] {
     return this.bookDataList
   }
 

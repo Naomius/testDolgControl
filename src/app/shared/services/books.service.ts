@@ -1,18 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { Observable} from "rxjs";
-import { JsonType} from "../../types/books-type";
+import {Observable} from "rxjs";
+import {Book, Json} from "../../types/books-type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService{
 
+  public singleBook!: Book;
+
   constructor(private http: HttpClient) {
   }
 
-  getBooks(): Observable<JsonType> {
-    return this.http.get<JsonType>('/assets/books.json')
+  public getBooks(): Observable<Json> {
+    return this.http.get<Json>('/assets/books.json')
   }
 
 }

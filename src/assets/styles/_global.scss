@@ -16,7 +16,11 @@ body {
 
 .invalid-feedback {
   color: red;
-  padding: 0 0 10px 0;
+  padding: 0 0 15px 0;
+}
+
+.mat-sort-header-container {
+  justify-content: center;
 }
 
 .filter-error {
@@ -68,7 +72,7 @@ body {
   }
 
   @-webkit-keyframes spin {
-    0%   {
+    0% {
       -webkit-transform: rotate(0deg);
       -ms-transform: rotate(0deg);
       transform: rotate(0deg);
@@ -81,7 +85,7 @@ body {
   }
 
   @keyframes spin {
-    0%   {
+    0% {
       -webkit-transform: rotate(0deg);
       -ms-transform: rotate(0deg);
       transform: rotate(0deg);
@@ -171,4 +175,12 @@ body {
   cursor: pointer;
   color: white;
 }
+
+.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
+  text-align: center;
+}
+
+
+
+
 
