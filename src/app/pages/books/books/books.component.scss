@@ -12,6 +12,17 @@
     img {
       width: 100px;
     }
+
+    td  {
+
+      a {
+        cursor: pointer;
+        &:hover {
+          color: #047cbb;
+        }
+      }
+
+    }
   }
 
 

@@ -1,17 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Book} from "../../../types/books-type";
-import {BooksService} from "../../../shared/services/books.service";
 import {map, Subject, takeUntil} from "rxjs";
-import {CartService} from "../../../shared/services/cart.service";
 import {Sort} from "@angular/material/sort";
 import {Router} from "@angular/router";
+import {CartService} from "../../../services/cart.service";
+import {BooksService} from "../../../services/books.service";
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss']
 })
-export class BooksComponent implements OnInit, OnDestroy{
+export class BooksComponent implements OnInit, OnDestroy {
 
   public books: Book[] = [];
   private booksCopy: Book[] = [];
@@ -19,47 +19,41 @@ export class BooksComponent implements OnInit, OnDestroy{
   public error = '';
   public isLoading = false;
   private destroy$ = new Subject();
-
   displayedColumns: string[] = ['position', 'image', 'name', 'price', 'description', 'buy'];
-
 
   constructor(private booksService: BooksService,
               private cartService: CartService,
               private router: Router) {
-    this.sortedData = this.books.slice();
   }
 
   ngOnInit(): void {
     this.getBooks();
-    this.cartService.updateBooks$
-      .pipe(
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-      this.prepareBooks();
-    })
   }
 
-  public selectedBook(book: Book) {
-    this.booksService.singleBook = book;
+  public selectBook(book: Book) {
+    this.booksService.selectedBook = book;
     this.router.navigate(['/book'])
   }
 
-
   private prepareBooks(): void {
     this.books.forEach((book) => {
-      const findBookInCart = this.cartService.bookDataList.find((bookInCart) => bookInCart.isbn13 === book.isbn13);
+      const findBookInCart = this.cartService.booksList.find((bookInCart) => bookInCart.isbn13 === book.isbn13);
       if (findBookInCart) {
         book.count = findBookInCart.count;
       } else {
         book.count = null;
       }
     });
-    // this.books = this.booksCopy;
   }
 
   public addBookToCart(book: Book) {
     this.cartService.addToCart(book)
+    this.prepareBooks();
+  }
+
+  public removeBookFromCart(book: Book) {
+    this.cartService.removeFromCart(book);
+    this.prepareBooks();
   }
 
   private getBooks(): void {
@@ -87,29 +81,26 @@ export class BooksComponent implements OnInit, OnDestroy{
     if (str.trim()) {
       this.searchString = str;
       this.books = this.booksCopy.filter(book => book.title.toLocaleLowerCase().includes(str.toLowerCase()) ||
-         book.subtitle.toLocaleLowerCase().includes(str.toLowerCase()))
+        book.subtitle.toLocaleLowerCase().includes(str.toLowerCase()))
     } else {
       this.cleanSearchInput();
     }
   }
-
 
   public cleanSearchInput(): void {
     this.searchString = '';
     this.books = this.booksCopy;
   }
 
-  public removeBookFromCart(book: Book) {
-    this.cartService.removeCartData(book)
-  }
+
 
   //Сортировка
-  sortedData: Book[];
 
-  sortBooks(sort: Sort) {
+  sortBooks(sort: Sort): void {
+    console.log(sort)
     const data = this.books.slice();
     if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
+      this.books = this.booksCopy;
       return;
     }
 
@@ -134,6 +125,4 @@ export class BooksComponent implements OnInit, OnDestroy{
     this.destroy$.next(true);
     this.destroy$.complete();
   }
-
-
 }

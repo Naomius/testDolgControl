@@ -36,7 +36,7 @@ body {
   position: relative;
   width: 150px;
   height: 150px;
-  margin: 0 auto;
+  margin: 250px auto;
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #9370DB;
@@ -180,7 +180,17 @@ body {
   text-align: center;
 }
 
+.books-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: large;
+  width: 150px;
 
-
-
-
+  .books-count {
+    border: 1px solid #047cbb;
+    border-radius: 8px;
+    padding: 5px 10px;
+  }
+}

@@ -8,6 +8,7 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
 import {SharedModule} from "./shared/shared.module";
 import {LayoutComponent} from "./layout/layout.component";
 import {LayoutModule} from "./layout/layout.module";
+import {Page404Module} from "./pages/page404/page404.module";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {LayoutModule} from "./layout/layout.module";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    Page404Module,
     SharedModule,
     HttpClientModule,
     AppRoutingModule,

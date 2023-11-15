@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {UserLoginType} from "../../types/userLogin-type";
-import {CartService} from "../../shared/services/cart.service";
 import {AuthService} from "../../core/auth.service";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'app-header',
@@ -13,23 +13,17 @@ import {AuthService} from "../../core/auth.service";
 export class HeaderComponent implements OnInit{
 
   authUser!: UserLoginType | null;
-  booksCounter: number = 0;
 
   constructor(private authService: AuthService,
               private _snakeBar: MatSnackBar,
               private router: Router,
-              private cartService: CartService) {
+              public cartService: CartService) {
   }
 
   ngOnInit(): void {
     this.authService.authUser$.subscribe((authUser) => {
       this.authUser = authUser;
     })
-
-    this.cartService.getBookData()
-      .subscribe(result => {
-        this.booksCounter = result.length;
-      })
   }
 
   doLogout(): void {

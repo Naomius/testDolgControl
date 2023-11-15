@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Book, Json} from "../../types/books-type";
+import {Book, Json} from "../types/books-type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService{
 
-  public singleBook!: Book;
+  public selectedBook!: Book;
 
   constructor(private http: HttpClient) {
   }

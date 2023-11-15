@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Book} from "../../../types/books-type";
 import {Router} from "@angular/router";
-import {BooksService} from "../../../shared/services/books.service";
-import {CartService} from "../../../shared/services/cart.service";
 import {Subject, takeUntil} from "rxjs";
+import {BooksService} from "../../../services/books.service";
+import {CartService} from "../../../services/cart.service";
 
 @Component({
   selector: 'app-book',
@@ -13,7 +13,7 @@ import {Subject, takeUntil} from "rxjs";
 export class BookComponent implements OnInit, OnDestroy{
 
   public book!: Book
-  private isLoading: boolean = false;
+  isLoading: boolean = false;
   destroy$ = new Subject();
 
   constructor(private router: Router,
@@ -24,35 +24,32 @@ export class BookComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.isLoading = true;
     this.getBook()
-    // this.cartService.updateBooks$.pipe(
-    //   takeUntil(this.destroy$)
-    // ).subscribe(() => {
-    //   // this.prepareBooks();
-    // })
   }
 
-  private getBook() {
-      if (!this.bookService.singleBook) {
+  private getBook(): void {
+      if (this.bookService.selectedBook) {
+        this.book = this.bookService.selectedBook
+        this.isLoading = false;
+      } else {
         this.router.navigate(['/books'])
       }
-        this.book = this.bookService.singleBook
   }
 
-  //  prepareBooks(): void {
-  //     const findBookInCart = this.cartService.bookDataList.find((bookInCart) => bookInCart.isbn13 === this.book.isbn13);
-  //     if (findBookInCart) {
-  //       this.book.count = findBookInCart.count;
-  //     } else {
-  //       this.book.count = null;
-  //     }
-  // }
+   prepareBooks(): void {
+    const findBookInCart = this.cartService.booksList.find((bookInCart) => bookInCart.isbn13 === this.book.isbn13);
+    if (findBookInCart) {
+      this.book = findBookInCart;
+    }
+  }
 
   public addBookToCart(book:Book) {
     this.cartService.addToCart(book);
+    this.prepareBooks();
   }
 
   public removeBookFromCart(book: Book) {
-    this.cartService.removeCartData(book)
+    this.cartService.removeFromCart(book);
+    this.prepareBooks();
   }
 
   ngOnDestroy(): void {

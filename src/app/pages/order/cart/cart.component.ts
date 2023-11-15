@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {CartService} from "../../../shared/services/cart.service";
 import {Book} from "../../../types/books-type";
+import {CartService} from "../../../services/cart.service";
 
 @Component({
   selector: 'app-cart',
@@ -9,40 +9,16 @@ import {Book} from "../../../types/books-type";
 })
 export class CartComponent implements OnInit {
 
-  public books!: Book[];
-  // private allBooksCounter: number = 0;
-  totalCountPrice: number = 0;
-
-  constructor(private cartService: CartService) {
-    this.setBook()
-  }
+  constructor(public cartService: CartService) {}
 
   ngOnInit(): void {
-    this.cartService.getBookData()
-      .subscribe(result => {
-        this.books = result;
-      })
-    this.totalBooksPrice()
   }
 
-  public removeBook(item: Book) {
-    this.cartService.removeCartData(item);
-    this.totalBooksPrice()
+   removeBook(book: Book) {
+    this.cartService.removeFromCart(book);
   }
 
-  // removeAllBooks() {
-  //   this.cartService.removeAllCart();
-  // }
-
-   private totalBooksPrice() {
-    let totalPrice: number = 0;
-    this.books.forEach(item => {
-      totalPrice += +item.price;
-      return this.totalCountPrice = totalPrice;
-    });
+  addBookToCart(book: Book) {
+    this.cartService.addToCart(book)
   }
-
-    private setBook() {
-       this.books = this.cartService.getBook();
-    }
 }
