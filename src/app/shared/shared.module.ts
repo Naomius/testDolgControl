@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import { PasswordRepeatDirective } from './directives/password-repeat.directive';
 import {MatSortModule} from "@angular/material/sort";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatMenuModule} from "@angular/material/menu";
@@ -11,11 +10,8 @@ import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
-    declarations: [
-        PasswordRepeatDirective,
-    ],
+    declarations: [],
     exports: [
-      PasswordRepeatDirective,
       MatSortModule,
       MatSnackBarModule,
       MatMenuModule,

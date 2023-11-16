@@ -2,7 +2,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Injectable} from "@angular/core";
 import {AuthService} from "../auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, timer} from "rxjs";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

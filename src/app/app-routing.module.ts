@@ -9,34 +9,36 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
+      { path: '', pathMatch: 'full', redirectTo: '/main' },
       {
         path: '',
-        redirectTo: '/main',
-        pathMatch: 'full'
+        loadChildren: () => import('./pages/main-page/main-page.module').then(m => m.MainPageModule)
       },
       {
         path: '',
-        loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule)
+        loadChildren: () => import('./pages/books-page/books-page.module').then(m => m.BooksPageModule), canActivate:[AuthGuard]
       },
       {
         path: '',
-        loadChildren: () => import('./pages/books/books.module').then(m => m.BooksModule), canActivate:[AuthGuard]
+        loadChildren: () => import('./pages/book-page/book-page.module').then(m => m.BookPageModule), canActivate:[AuthGuard]
       },
       {
         path: '',
-        loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule), canActivate:[AuthLoginGuard]
+        loadChildren: () => import('./pages/login-page/login-page.module').then(m => m.LoginPageModule), canActivate:[AuthLoginGuard]
+      }, {
+        path: '',
+        loadChildren: () => import('./pages/signup-page/signup-page.module').then(m => m.SignupPageModule), canActivate:[AuthLoginGuard]
       },
       {
         path: '',
-        loadChildren: () => import('./pages/order/order.module').then(m => m.OrderModule), canActivate:[AuthGuard]
+        loadChildren: () => import('./pages/cart-page/cart-page.module').then(m => m.CartPageModule), canActivate:[AuthGuard]
       },
       {
         path: '**',
-        loadChildren: () => import('./pages/page404/page404.module').then(m => m.Page404Module)//todo создать модуль 404 в pages и роутинг
+        loadChildren: () => import('./pages/not-found-page/not-found-page.module').then(m => m.NotFoundPageModule)
       },
     ]
   },
-
 ];
 
 @NgModule({

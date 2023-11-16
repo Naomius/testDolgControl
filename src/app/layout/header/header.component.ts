@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
-import {UserLoginType} from "../../types/userLogin-type";
+import {UserLogin} from "../../types/userLogin";
 import {AuthService} from "../../core/auth.service";
 import {CartService} from "../../services/cart.service";
 
@@ -12,7 +12,7 @@ import {CartService} from "../../services/cart.service";
 })
 export class HeaderComponent implements OnInit{
 
-  authUser!: UserLoginType | null;
+  authUser!: UserLogin | null;
 
   constructor(private authService: AuthService,
               private _snakeBar: MatSnackBar,

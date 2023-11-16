@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="book-items">
+    <div class="book-item__image">
+      <img src="{{book.image}}" alt="book">
+    </div>
+    <div class="book-item__about">
+      <h2 class="book-item__title">{{book.title}}</h2>
+      <div class="book-item__text">{{book.subtitle}}</div>
+      <div class="book-item__price">Цена: {{book.price | currency}}</div>
+      <div class="book-item__button">
+        <button routerLink="/books" mat-raised-button color="primary">На страницу книги</button>
+      </div>
+      <div class="books-buttons">
+        <button mat-raised-button color="warn" *ngIf="book.count" (click)="removeBookFromCart(book)">
+          <span>-</span>
+        </button>
+        <span *ngIf="book.count" class="books-count">{{book.count}}</span>
+        <button mat-raised-button color="primary" class="book-button__plus" (click)="addBookToCart(book)">
+          <span *ngIf="!book.count">Добавить в корзину</span>
+          <span *ngIf="book.count">+</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

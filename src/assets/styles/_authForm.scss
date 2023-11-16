@@ -1,11 +1,11 @@
-// Общие для login & signup
+// Общие для login & signup-page
 .auth-form {
   display: flex;
   text-align: center;
   max-width: 1000px;
   max-height: 700px;
 
-  .auth-form__left {
+  &__left {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -14,7 +14,7 @@
     border-bottom-left-radius: 20px;
     border-top-left-radius: 20px;
 
-    .auth-form__title {
+    &__title {
       h1 {
         font-size: 28px;
         text-transform: uppercase;

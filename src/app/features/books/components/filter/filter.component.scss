@@ -1,0 +1,66 @@
+
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media screen and (min-width: 768px) {
+    justify-content: normal;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    font-weight: 500;
+
+    @media screen and (min-width: 576px) {
+      flex-basis: 15%;
+    }
+
+    @media screen and (min-width: 768px) {
+      flex-basis: auto;
+      margin-right: 1rem;
+    }
+  }
+
+  &__input {
+    flex-basis: 100%;
+    order: 3;
+    margin-top: 1rem;
+
+    @media screen and (min-width: 576px) {
+      flex-basis: 60%;
+      margin-top: 0;
+      order: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      flex-basis: auto;
+      margin-right: 1rem;
+    }
+  }
+
+  .input {
+    font-size: 15px;
+    padding: 8px 8px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    transition: .2s ease-out;
+    outline: none;
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &__clean-btn {
+    @media screen and (min-width: 576px) {
+      flex-basis: 20%;
+      margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      flex-basis: auto;
+    }
+  }
+}
